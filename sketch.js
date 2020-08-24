@@ -27,6 +27,7 @@ var angle;
 var astroid3_image, planet_image1;
 var enemyLife = 250;
 var bullet2_Image;
+var dScore = 0;
 
 function preload(){
   player_Image = loadImage("Images/player.png");
@@ -76,8 +77,6 @@ function setup() {
 
   player = createSprite(windowWidth/2,windowHeight/2,20,20);
   player.addImage(player_Image);
-  player.rotation = 360;
-  player.rotateToDirection = true;
 
   life1 = createSprite(windowWidth-105, windowHeight/13,20,20);
   life1.addImage(life1_Image);
@@ -120,28 +119,30 @@ function draw() {
     bullet2();
 
   if(keyDown(UP_ARROW)){
-    player.rotation = player.rotation+10;
+    // player.rotation = player.rotation+10;
     player.addImage(player_Image);
     player.velocityY = -6;
     player.velocityX = 0;
+    player.addImage(player_Image);
   }
 
   if(keyDown(LEFT_ARROW)){
-    player.rotation = player.rotation+70;
+    // player.rotation = player.rotation+70;
     player.velocityX = -6;
     player.velocityY = 0;
-
+    player.addImage(playerLeft_Image);
   }
   if(keyDown(DOWN_ARROW)){
-    player.rotation = player.rotation+70;
+    // player.rotation = player.rotation+70;
     player.velocityY = 6;
     player.velocityX = 0;
-  
+    player.addImage(playerDown_Image);
   }
   if(keyDown(RIGHT_ARROW)){
-    player.rotation = player.rotation+70;
+    // player.rotation = player.rotation+70;
     player.velocityX = 6;
     player.velocityY = 0;
+    player.addImage(playerRight_Image);
   }
 
   player.bounceOff(edges);
@@ -152,7 +153,11 @@ function draw() {
   }
   if(player.isTouching(power)){
     power.visible = false;
-    score = score+1;
+    dScore = 100;
+    power.y = windowHeight/2-600;
+  }
+  if(frameCount%10===0){
+     dScore = dScore-10;
   }
 
 
@@ -247,6 +252,7 @@ function restart(){
    lifeCount = 3;
    player.visible = true;
    power.visible = false;
+   dScore = 0;
 }
 
 function obstacles(){
@@ -306,7 +312,7 @@ function food(){
 }
 
 function bullets(){
-  if(score>1 && frameCount%25===0){
+  if(score>2 && frameCount%25===0){
     var bullets  = createSprite(enemyShooter.x, enemyShooter.y, 10,10);
     bullets.addImage(bullet_Image);
     bullets.scale = 0.1;
@@ -365,7 +371,7 @@ function obstacles2(){
 
 }
 function bullet2(){
-  if(score>1 && frameCount%10===0 && keyDown("SPACE")){
+  if(score>1 && frameCount%10===0 && keyDown("SPACE") && dScore>0){
     var bullets  = createSprite(player.x, player.y, 10,10);
     bullets.addImage(bullet2_Image);
     bullets.scale = 0.1;
@@ -373,6 +379,5 @@ function bullet2(){
     bullets.velocityY = -15;
     bullet_sound.play();
     bullet2Group.add(bullets); 
-
    }
 }
