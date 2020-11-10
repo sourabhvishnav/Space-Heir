@@ -28,6 +28,7 @@ var astroid3_image, planet_image1;
 var enemyLife = 250;
 var bullet2_Image;
 var dScore = 0;
+var direction = 0;
 
 function preload(){
   player_Image = loadImage("Images/player.png");
@@ -118,32 +119,31 @@ function draw() {
 
     bullet2();
 
-  if(keyDown(UP_ARROW)){
-    // player.rotation = player.rotation+10;
-    player.addImage(player_Image);
-    player.velocityY = -6;
-    player.velocityX = 0;
-    player.addImage(player_Image);
-  }
+    if(keyDown(UP_ARROW)){  
 
-  if(keyDown(LEFT_ARROW)){
-    // player.rotation = player.rotation+70;
-    player.velocityX = -6;
-    player.velocityY = 0;
-    player.addImage(playerLeft_Image);
-  }
-  if(keyDown(DOWN_ARROW)){
-    // player.rotation = player.rotation+70;
-    player.velocityY = 6;
-    player.velocityX = 0;
-    player.addImage(playerDown_Image);
-  }
-  if(keyDown(RIGHT_ARROW)){
-    // player.rotation = player.rotation+70;
-    player.velocityX = 6;
-    player.velocityY = 0;
-    player.addImage(playerRight_Image);
-  }
+      player.rotation=0;
+      player.addImage(player_Image); player.setSpeed(7,-90);
+
+     } 
+
+    if(keyDown(LEFT_ARROW)){ 
+      player.rotation=-90;
+      player.velocityX = -7;
+      player.velocityY = 0;
+     }
+
+     if(keyDown(DOWN_ARROW)){
+        player.rotation=180;
+        player.velocityY = 7;
+        player.velocityX = 0;
+     } 
+
+     if(keyDown(RIGHT_ARROW)){ player.rotation=90;
+      player.velocityX = 7;
+      player.velocityY = 0;
+     }
+
+
 
   player.bounceOff(edges);
 
@@ -153,12 +153,13 @@ function draw() {
   }
   if(player.isTouching(power)){
     power.visible = false;
-    dScore = 100;
+    dScore = 350;
     power.y = windowHeight/2-600;
   }
   if(frameCount%10===0){
      dScore = dScore-10;
   }
+ console.log(dScore); 
 
 
   if(pointGroup.isTouching(player)||point2Group.isTouching(player)||bulletGroup.isTouching(player)||enemyShooter.isTouching(player)){
@@ -176,7 +177,7 @@ function draw() {
   if(bullet2Group.isTouching(enemyShooter)){
     enemyLife = enemyLife -5;
    }
-   console.log(enemyLife);
+
 
   if(lifeCount===2){
     life3.visible = false;
@@ -200,7 +201,7 @@ function draw() {
   food();
 
 
-  if(score>2){
+  if(score>1){
     enemyShooter.visible = true;
   }
   if(enemyLife<0){
@@ -253,6 +254,9 @@ function restart(){
    player.visible = true;
    power.visible = false;
    dScore = 0;
+   power.visible = true ;
+  
+   
 }
 
 function obstacles(){
